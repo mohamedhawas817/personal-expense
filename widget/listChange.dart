@@ -16,9 +16,14 @@ class Changeit extends ChangeNotifier {
   ];
 
 
-  void addOne(String title, double amount) {
-    transcation.add(Transcation(title:title, amount: amount, dateTime: DateTime.now() ));
+  void addOne(String title, double amount, DateTime dateTime) {
+    transcation.add(Transcation(title:title, amount: amount, dateTime: dateTime ));
     notifyListeners();
+  }
+
+
+  void deteit(n) {
+    transcation.removeAt(n);
   }
 
 

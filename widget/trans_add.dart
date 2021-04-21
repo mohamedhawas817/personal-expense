@@ -23,11 +23,12 @@ class _TranAddState extends State<TranAdd> {
 
   final titleController = TextEditingController();
   final amountController = TextEditingController();
+  DateTime _selectedDate;
 
   List<Transcation> transcation = [
-    // Transcation(id: 0, title: "Eating pizza", amount: 50.6, dateTime: DateTime.now()  ),
-    // Transcation(id: 1, title: "حواوشي", amount: 15.6, dateTime: DateTime.now()  ),
-    // Transcation(id: 2, title: "Spagtie", amount: 20.6, dateTime: DateTime.now()  ),
+    Transcation(id: 0, title: "Eating pizza", amount: 50.6, dateTime: DateTime.now()  ),
+    Transcation(id: 1, title: "حواوشي", amount: 15.6, dateTime: DateTime.now()  ),
+    Transcation(id: 2, title: "Spagtie", amount: 20.6, dateTime: DateTime.now()  ),
   ];
 
 
@@ -37,7 +38,7 @@ class _TranAddState extends State<TranAdd> {
 
     setState(() {
       // transcation.add(Transcation(title:inputTitle, amount:double.parse(inputAmount)  ));
-      Provider.of<Changeit>(context, listen: false).addOne(inputTitle, double.parse(inputAmount));
+      Provider.of<Changeit>(context, listen: false).addOne(inputTitle, double.parse(inputAmount), _selectedDate );
 
       Navigator.pop(context);
     });
@@ -51,6 +52,20 @@ class _TranAddState extends State<TranAdd> {
 
     titleController.clear();
     amountController.clear();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(context: context, initialDate: DateTime.now() , firstDate: DateTime(2019), lastDate: DateTime.now())
+        .then((pickedDate) {
+          if(pickedDate == null) {
+            return;
+          }
+          setState(() {
+            _selectedDate = pickedDate;
+          });
+
+
+    });
   }
 
   @override
@@ -93,7 +108,19 @@ class _TranAddState extends State<TranAdd> {
           },
 
         ),
-        FlatButton(
+
+        Container(
+          height: 70,
+          child: Row(
+            children: [
+              Expanded(child: Text(_selectedDate == null ? "No Date choosen" : DateFormat.yMd().format(_selectedDate) )),
+              FlatButton(child: Text("Choose Date",style: TextStyle(fontWeight: FontWeight.w700),), onPressed: () {
+                _presentDatePicker();
+              })
+            ],
+          ),
+        ),
+        RaisedButton(
           textColor: Colors.purple,
           child: Text("Add Transcation"),
           onPressed: () {

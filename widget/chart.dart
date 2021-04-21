@@ -32,13 +32,13 @@ class Chart  extends StatelessWidget {
       print(totalSum);
 
       return {'day' : DateFormat.E().format(weekDay).substring(0,1), 'amount' :totalSum};
-    });
+    }).reversed.toList();
   }
 
 
   double get maxSpending {
     return groupedTranscationValue.fold(0.0 , (previousValue, element) {
-      return previousValue + element['']
+      return previousValue + element['amount'];
     });
   }
 
@@ -48,10 +48,21 @@ class Chart  extends StatelessWidget {
     return Card(
       elevation: 6,
       margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTranscationValue.map((data) {
-          return ChartBar(label: data['day'], spendingAmount: data['amount'], spendingPctOfTotal: , )
-        }).toList(),
+      child: Container(
+        padding: EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          children: groupedTranscationValue.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                label: data['day'],
+                spendingAmount: data['amount'],
+                spendingPctOfTotal: maxSpending == 0.0 ? 0.0:  (data['amount'] as double) / maxSpending , ),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
