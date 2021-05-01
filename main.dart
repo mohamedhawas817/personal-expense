@@ -4,8 +4,14 @@ import 'package:intl/intl.dart';
 import 'widget/home.dart';
 import 'widget/listChange.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(MyApp());
 }
 
@@ -14,7 +20,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => Changeit() ,
-      child: MaterialApp(
+      child: Platform.isIOS ? CupertinoApp(
+        theme: CupertinoThemeData(
+          primaryColor: Colors.purple
+        ),
+        home: HomePage(),
+      ) : MaterialApp(
         theme: ThemeData(
           textTheme: ThemeData.light().textTheme.copyWith(
             headline6: TextStyle(

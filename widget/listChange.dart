@@ -22,8 +22,10 @@ class Changeit extends ChangeNotifier {
   }
 
 
-  void deteit(n) {
+  void deteit(int n) {
     transcation.removeAt(n);
+    print("done");
+    notifyListeners();
   }
 
 

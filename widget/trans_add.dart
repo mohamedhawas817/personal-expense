@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'tran_list.dart';
 import 'listChange.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'dart:io';
 
 
 class TranAdd extends StatefulWidget {
@@ -72,7 +72,7 @@ class _TranAddState extends State<TranAdd> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
+        Platform.isIOS ? CupertinoTextField() : TextField(
           onSubmitted: (val) => sub(),
           controller: titleController,
           decoration: InputDecoration(
@@ -114,7 +114,12 @@ class _TranAddState extends State<TranAdd> {
           child: Row(
             children: [
               Expanded(child: Text(_selectedDate == null ? "No Date choosen" : DateFormat.yMd().format(_selectedDate) )),
-              FlatButton(child: Text("Choose Date",style: TextStyle(fontWeight: FontWeight.w700),), onPressed: () {
+             Platform.isIOS ? CupertinoButton(
+                 child:  Text("Choose Date",style: TextStyle(fontWeight: FontWeight.w700),),
+                 onPressed:  () {
+                   _presentDatePicker();
+                 }
+             ) : FlatButton(child: Text("Choose Date",style: TextStyle(fontWeight: FontWeight.w700),), onPressed: () {
                 _presentDatePicker();
               })
             ],
@@ -139,3 +144,6 @@ class _TranAddState extends State<TranAdd> {
 
 // Provider.of<Changeit>(context, listen: false).addOne(inputTitle, double.parse(inputAmount));
 
+// for sowftkeyboard
+
+// MediaQuery.of(context).viewSets.bottom + 10
